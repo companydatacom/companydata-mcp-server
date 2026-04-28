@@ -2,7 +2,7 @@
   "name": "companydata-mcp-server",
   "version": "1.0.0",
   "description": "MCP server for CompanyData HTTP API (search, export, location lookups)",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",

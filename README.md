@@ -2,7 +2,7 @@
 
 Model Context Protocol (stdio) server that exposes the [CompanyData HTTP API](https://companydata.com/api-docs/) as tools: **company search**, **company export (enrich)**, and **location lookup** (cities / provinces / regions / countries).
 
-Contract matches [`companydata-website-nextjs/public/openapi.json`](https://github.com/your-org/companydata-website-nextjs/blob/main/public/openapi.json) (sibling repo).
+Contract matches the sibling repo OpenAPI: `/Users/mitkoevoets/Workbench/tosh/companydata-website-nextjs/public/openapi.json`.
 
 ## Prerequisites
 
@@ -56,6 +56,13 @@ Copy `.env.example` to `.env` for local testing with `npm run dev` (load env in 
 
 3. Reload MCP / restart Cursor if needed.
 
+## Smoke checklist
+
+- Server starts without errors (`npm run build && node dist/index.js` with env set).
+- MCP host lists tools: `company_search`, `company_enrich`, `field_lookup`.
+- `company_search` returns 200 payload for a simple query (e.g. `search=BoldData`).
+- `field_lookup` returns exact values from one lookup endpoint (e.g. `resource=cities`, `search=amst`).
+
 Development without a separate build step:
 
 ```json
@@ -66,6 +73,16 @@ Development without a separate build step:
 ## CLI
 
 After `npm run build`, the package exposes `companydata-mcp` when linked (`npm link`) or when `node_modules/.bin` is on `PATH`.
+
+## Distribution
+
+Current distribution mode is **GitHub/clone-based**:
+
+1. Clone the repository.
+2. Run `npm install && npm run build`.
+3. Configure MCP host to execute `dist/index.js` (or `src/index.ts` via `tsx` for dev).
+
+If you later want npm distribution, the package is already set up with `bin` and `files` fields.
 
 ## License
 
