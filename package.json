@@ -1,7 +1,7 @@
 {
   "name": "companydata-mcp-server",
   "version": "1.0.0",
-  "description": "MCP server for CompanyData HTTP API (search, export, location lookups)",
+  "description": "MCP server for the CompanyData API — company search, export, and city lookup",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -10,19 +10,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mitkoevoets/companydata-mcp-server.git"
+    "url": "git+https://github.com/companydatacom/companydata-mcp-server.git"
   },
   "keywords": [
     "mcp",
     "companydata",
-    "modelcontextprotocol"
+    "modelcontextprotocol",
+    "cursor"
   ],
-  "author": "",
+  "author": "CompanyData",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mitkoevoets/companydata-mcp-server/issues"
+    "url": "https://github.com/companydatacom/companydata-mcp-server/issues"
   },
-  "homepage": "https://github.com/mitkoevoets/companydata-mcp-server#readme",
+  "homepage": "https://companydata.com/product/mcp-server/",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "zod": "^4.3.6"

@@ -1,17 +1,20 @@
 # CompanyData MCP server
 
-Model Context Protocol (stdio) server that exposes the [CompanyData HTTP API](https://companydata.com/api-docs/) as tools: **company search**, **company export (enrich)**, and **location lookup** (cities / provinces / regions / countries).
+Model Context Protocol (stdio) server that exposes the [CompanyData HTTP API](https://companydata.com/api-docs/) as tools: **company search**, **company export (enrich)**, and **location lookup** (cities).
 
-Contract matches the sibling repo OpenAPI: `/Users/mitkoevoets/Workbench/tosh/companydata-website-nextjs/public/openapi.json`.
+Product overview and setup guide: [companydata.com/product/mcp-server/](https://companydata.com/product/mcp-server/).
+
+OpenAPI contract: [https://companydata.com/openapi.json](https://companydata.com/openapi.json).
 
 ## Prerequisites
 
 - Node.js 18+
-- A CompanyData API key
+- A CompanyData API key ([get one](https://app.companydata.com/signup-api))
 
 ## Install and build
 
 ```bash
+git clone https://github.com/companydatacom/companydata-mcp-server.git
 cd companydata-mcp-server
 npm install
 npm run build
@@ -32,12 +35,12 @@ Copy `.env.example` to `.env` for local testing with `npm run dev` (load env in 
 |------|-----|
 | `company_search` | `GET /api/company/search` |
 | `company_enrich` | `GET /api/company/export` with `ID` and `export=true` |
-| `field_lookup` | `GET /api/cities`, `/api/provinces`, `/api/regions`, or `/api/countries` |
+| `field_lookup` | `GET /api/cities` |
 
-## Cursor
+## Cursor & Claude Desktop
 
 1. Build the project (`npm run build`).
-2. In **Cursor Settings → MCP**, add a server (adjust paths):
+2. In your MCP host (e.g. **Cursor Settings → MCP** or Claude Desktop config), add a server (adjust paths):
 
 ```json
 {
@@ -61,13 +64,23 @@ Copy `.env.example` to `.env` for local testing with `npm run dev` (load env in 
 - Server starts without errors (`npm run build && node dist/index.js` with env set).
 - MCP host lists tools: `company_search`, `company_enrich`, `field_lookup`.
 - `company_search` returns 200 payload for a simple query (e.g. `search=BoldData`).
-- `field_lookup` returns exact values from one lookup endpoint (e.g. `resource=cities`, `search=amst`).
+- `field_lookup` returns city suggestions (e.g. `search=amst`).
 
 Development without a separate build step:
 
 ```json
-"command": "npx",
-"args": ["tsx", "/ABSOLUTE/PATH/TO/companydata-mcp-server/src/index.ts"],
+{
+  "mcpServers": {
+    "companydata": {
+      "command": "npx",
+      "args": ["tsx", "/ABSOLUTE/PATH/TO/companydata-mcp-server/src/index.ts"],
+      "env": {
+        "COMPANYDATA_API_KEY": "your-api-key-here",
+        "COMPANYDATA_API_BASE_URL": "https://app.companydata.com"
+      }
+    }
+  }
+}
 ```
 
 ## CLI

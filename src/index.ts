@@ -27,7 +27,7 @@ async function main() {
     { name: 'companydata-mcp', version: '1.0.0' },
     {
       instructions:
-        'CompanyData MCP: call company search, company export (enrich), and location lookup APIs. Set COMPANYDATA_API_KEY and optional COMPANYDATA_API_BASE_URL (default https://app.companydata.com).',
+        'CompanyData MCP: company_search, company_enrich, field_lookup (cities). Docs: https://companydata.com/product/mcp-server/ — set COMPANYDATA_API_KEY and optional COMPANYDATA_API_BASE_URL (default https://app.companydata.com).',
     }
   );
 
@@ -77,28 +77,24 @@ async function main() {
     }
   );
 
-  const lookupResource = z.enum(['cities', 'provinces', 'regions', 'countries']);
-
   server.registerTool(
     'field_lookup',
     {
       title: 'Location lookup',
       description:
-        'GET /api/cities, /api/provinces, /api/regions, or /api/countries for exact filter values used by search/export.',
+        'GET /api/cities for exact city values used by search/export.',
       inputSchema: {
-        resource: lookupResource,
         search: z.string().describe('Autocomplete search string (query param search).'),
         countries: z.string().optional().describe('Optional countries query param (ISO code).'),
         limit: z.number().int().positive().optional().describe('Optional limit (default 100).'),
       },
       annotations: { readOnlyHint: true },
     },
-    async ({ resource, search, countries, limit }) => {
-      const path = `/api/${resource}`;
+    async ({ search, countries, limit }) => {
       const query: Record<string, unknown> = { search };
       if (countries !== undefined) query.countries = countries;
       if (limit !== undefined) query.limit = limit;
-      const result = await http.getJson(path, query);
+      const result = await http.getJson('/api/cities', query);
       return toolResponse(result);
     }
   );
